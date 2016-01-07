@@ -40,15 +40,6 @@ class controller implements controllerInterface{
    * @return [boolean]               [True for running the route, false for display error no permission]
    */
   public function access($functionName, $me){
-    $me = json_decode($_SESSION['user']);
-    $response = file_get_contents("http://firstapp.dev/users/verify?name=".$me->name."&token=".$me->token);
-    switch ($response) {
-      case 'true':
-        return true;
-      break;
-      case 'false':
-        return false;
-      break;
-    }
+    return true;
   }
 }

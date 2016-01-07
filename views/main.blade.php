@@ -6,11 +6,12 @@
 <html>
     <head>
          {!!$styles!!}
-         @yield('extfiles')
+         @yield('extcss')
         <title>Lite Framework - @yield('title')</title>
     </head>
     <body>
        @yield('content')
        {!!$scripts!!}
+       @yield('extjs')
     </body>
 </html>

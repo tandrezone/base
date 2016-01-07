@@ -1,3 +1,4 @@
 Base Files
 All the controllers and models are childrens of this bases
 Now can access views from packages
+Now the main view is in the base

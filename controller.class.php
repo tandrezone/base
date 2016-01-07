@@ -12,12 +12,16 @@ class controller implements controllerInterface{
  */
   public function __construct(EntityManager $em, $path)
   {
-    $path = [$path.'/views'];         // your view file path, it's an array
+    $views = unserialize(VIEWS);
+    $pathView[] = $path.'/views';                       // Load the views from the app or package you are using
+    foreach ($views as $view) {
+      $pathView[] = $view;                               // Can load anothers views from anothers packages
+    }
     $cachePath = 'tmp/cache';     // compiled file path
 
     $compiler = new \Xiaoler\Blade\Compilers\BladeCompiler($cachePath);
     $engine = new \Xiaoler\Blade\Engines\CompilerEngine($compiler);
-    $finder = new \Xiaoler\Blade\FileViewFinder($path);
+    $finder = new \Xiaoler\Blade\FileViewFinder($pathView);
     $factory = new \Xiaoler\Blade\Factory($engine, $finder);
     $this->view = $factory;
 
@@ -36,8 +40,15 @@ class controller implements controllerInterface{
    * @return [boolean]               [True for running the route, false for display error no permission]
    */
   public function access($functionName, $me){
-    //Create the access list for each function in this controller you can attribute a level of access
-    $this->accessList = array("index" => "11");
-    return true;
+    $me = json_decode($_SESSION['user']);
+    $response = file_get_contents("http://firstapp.dev/users/verify?name=".$me->name."&token=".$me->token);
+    switch ($response) {
+      case 'true':
+        return true;
+      break;
+      case 'false':
+        return false;
+      break;
+    }
   }
 }
